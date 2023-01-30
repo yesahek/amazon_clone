@@ -1,3 +1,4 @@
+import 'package:amazon_clone/common/bottom_bar.dart';
 import 'package:amazon_clone/constants/global_vaiables.dart';
 import 'package:amazon_clone/features/auth/screens/auth_screen.dart';
 import 'package:amazon_clone/features/auth/services/auth_service.dart';
@@ -46,7 +47,7 @@ class _MyAppState extends State<MyApp> {
         settings,
       ),
       home: Provider.of<UserProvider>(context).user.token.isNotEmpty
-          ? const HomeScrean()
+          ? const BottomBar()
           : const AuthScreen(),
     );
   }
