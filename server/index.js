@@ -1,5 +1,5 @@
 
-const { json } = require('express');
+//const { json } = require('express');
 const express = require('express');
 const mongoose = require('mongoose');
 
@@ -13,14 +13,19 @@ const DB = "mongodb+srv://isaac:isaac123@cluster0.eaweg1o.mongodb.net/?retryWrit
 app.use(express.json());
 app.use(authRouter);
 
-// Connections
-mongoose.connect(DB).then(()=>{
-    console.log("Connction Successful");
-}).catch((e)=>{
-    console.log(e);
-});
 
-app.listen(PORT, "0.0.0.0", ()=>{
-console.log(`connected at port ${PORT}`);
+mongoose.set('strictQuery', true);
+// Connections
+mongoose
+  .connect(DB)
+  .then(() => {
+    console.log("Connection Successful");
+  })
+  .catch((e) => {
+    console.log(e);
+  });
+
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`connected at port ${PORT}`);
 });
 
