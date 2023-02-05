@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:amazon_clone/constants/error_handling.dart';
 import 'package:amazon_clone/constants/utils.dart';
-import 'package:amazon_clone/home/screens/home_screen.dart';
 import 'package:amazon_clone/models/user.dart';
 import 'package:amazon_clone/providers/user_provider.dart';
 import 'package:flutter/cupertino.dart';
@@ -38,6 +37,7 @@ class AuthService {
           'Content-Type': 'application/json; charset=UTF-8',
         },
       );
+      // ignore: use_build_context_synchronously
       httpErrorHandle(
         response: res,
         context: context,
@@ -71,7 +71,6 @@ class AuthService {
           'Content-Type': 'application/json; charset=UTF-8',
         },
       );
-
       // ignore: use_build_context_synchronously
       httpErrorHandle(
         response: res,
@@ -80,13 +79,13 @@ class AuthService {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           // ignore: use_build_context_synchronously
           Provider.of<UserProvider>(context, listen: false).setUser(res.body);
+          await prefs.setString('x-auth-token', jsonDecode(res.body)['token']);
           // ignore: use_build_context_synchronously
           Navigator.pushNamedAndRemoveUntil(
             context,
             BottomBar.routeName,
             (route) => false,
           );
-          await prefs.setString('x-auth-token', jsonDecode(res.body)['token']);
         },
       );
     } catch (e) {
@@ -94,9 +93,9 @@ class AuthService {
     }
   }
 
-  void getUserData({
-    BuildContext? context,
-  }) async {
+  void getUserData(
+    BuildContext context,
+  ) async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? token = prefs.getString('x-auth-token');
@@ -114,6 +113,7 @@ class AuthService {
       );
 
       var response = jsonDecode(tokenRes.body);
+
       if (response == true) {
         http.Response userRes = await http.get(
           Uri.parse('$uri/'),
@@ -122,39 +122,12 @@ class AuthService {
             'x-auth-token': token
           },
         );
-        Provider.of<UserProvider>(context!, listen: false)
-            .setUser(userRes.body);
+
+        var userProvider = Provider.of<UserProvider>(context, listen: false);
+        userProvider.setUser(userRes.body);
       }
-      // http.Response res = await http.post(
-      //   Uri.parse('$uri/api/signin'),
-      //   body: jsonEncode({
-      //     'email': email,
-      //     'password': password,
-      //   }),
-      //   headers: <String, String>{
-      //     'Content-Type': 'application/json; charset=UTF-8',
-      //   },
-      // );
-      // // ignore: use_build_context_synchronously
-      // httpErrorHandle(
-      //   response: res,
-      //   context: context,
-      //   onSuccess: () async {
-      //     Provider.of<UserProvider>(context, listen: false).setUser(res.body);
-      //     Navigator.pushNamedAndRemoveUntil(
-      //       context,
-      //       HomeScrean.routeName,
-      //       (route) => false,
-      //     );
-      //     SharedPreferences prefs = await SharedPreferences.getInstance();
-      //     await prefs.setString('x-auth-token', jsonDecode(res.body)['token']);
-      //   },
-      // );
     } catch (e) {
-      showSnackBar(
-        context!,
-        e.toString(),
-      );
+      showSnackBar(context, e.toString());
     }
   }
 }
