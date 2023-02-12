@@ -2,6 +2,7 @@
 //const { json } = require('express');
 const express = require('express');
 const mongoose = require('mongoose');
+const adminRouter = require('./routes/admin');
 
 const authRouter = require('./routes/auth');
 
@@ -12,6 +13,7 @@ const DB = "mongodb+srv://isaac:isaac123@cluster0.eaweg1o.mongodb.net/?retryWrit
 // middleware
 app.use(express.json());
 app.use(authRouter);
+app.use(adminRouter);
 
 
 mongoose.set('strictQuery', true);

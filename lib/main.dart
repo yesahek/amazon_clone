@@ -1,6 +1,6 @@
 import 'package:amazon_clone/common/bottom_bar.dart';
 import 'package:amazon_clone/constants/global_vaiables.dart';
-import 'package:amazon_clone/features/admin/screans/admin_screen.dart';
+import 'package:amazon_clone/features/admin/screens/admin_screen.dart';
 import 'package:amazon_clone/features/auth/screens/auth_screen.dart';
 import 'package:amazon_clone/features/auth/services/auth_service.dart';
 import 'package:amazon_clone/providers/user_provider.dart';
@@ -48,7 +48,7 @@ class _MyAppState extends State<MyApp> {
             color: Colors.black,
           ),
         ),
-        useMaterial3: true, // can remove this line
+        //useMaterial3: true,
       ),
       onGenerateRoute: (settings) => generateRoute(settings),
       home: Provider.of<UserProvider>(context).user.token.isNotEmpty

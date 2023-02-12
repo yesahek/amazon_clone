@@ -1,3 +1,5 @@
+import 'package:amazon_clone/features/admin/screens/add_product_screen.dart';
+import 'package:amazon_clone/features/admin/screens/post_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
 
@@ -16,8 +18,8 @@ class _AdminScreenState extends State<AdminScreen> {
   double bottomBarBorderWidth = 5;
 
   List<Widget> pages = [
-    const Center(child: Text('Posts page')),
-    const Center(child: Text('Posts page')),
+    const PostScreen(),
+    const AddProductScreen(),
     const Center(
       child: Text('Cart page'),
     ),
